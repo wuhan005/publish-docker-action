@@ -31,7 +31,7 @@ func getFormatTag(tagFormat string) []string{
 	t = strings.Replace(t, "%H%", strconv.Itoa(time.Now().Hour()), -1)              	// %H% Hour
 	t = strings.Replace(t, "%m%", strconv.Itoa(time.Now().Minute()), -1)              	// %m% Minute
 	t = strings.Replace(t, "%s%", strconv.Itoa(time.Now().Second()), -1)              	// %s% Second
-	
+
 	tags = append(tags, t)
 	return tags
 }

@@ -9,7 +9,7 @@ tag and push to docker default registry (docker.io). Repository name is your Git
 name by default.
 
 ```yaml
-- uses: jerray/publish-docker-action@master
+- uses: wuhan005/publish-docker-action@master
   with:
     username: ${{ secrets.DOCKER_USERNAME }}
     password: ${{ secrets.DOCKER_PASSWORD }}
@@ -23,7 +23,7 @@ in the default workspace direcotry.
 Registry and repository name can be changed with `registry` and `repository` arguments. For example:
 
 ```yaml
-- uses: jerray/publish-docker-action@master
+- uses: wuhan005/publish-docker-action@master
   with:
     username: ${{ secrets.DOCKER_USERNAME }}
     password: ${{ secrets.DOCKER_PASSWORD }}
@@ -31,57 +31,35 @@ Registry and repository name can be changed with `registry` and `repository` arg
     repository: jerray/publish-docker-action
 ```
 
-### Tags
+#### Tag Format
 
-#### Static Tag List
+When you set `auto_tag` to `true`, you can customize the image's tag.
 
-You can use static tag list by specify `tags` arguments. Tag names must be separated by comma.
+Use `tag_format` to format the tag. Default is `"%TIMESTAMP%"`
 
-```yaml
-- uses: jerray/publish-docker-action@master
-  with:
-    username: ${{ secrets.DOCKER_USERNAME }}
-    password: ${{ secrets.DOCKER_PASSWORD }}
-    registry: docker.pkg.github.com
-    repository: jerray/publish-docker-action
-    tags: latest,newest,master
+Format signs:
+```
+%TIMESTAMP%     Timestamp
+%YYYY%          Year
+%MM%            Month
+%DD%            Day
+%H%             Hour
+%m%             Minute
+%s%             Second
 ```
 
-Example above will build image and create three tags, and push all of them to the registry.
-
-* `jerray/publish-docker-action:latest`
-* `jerray/publish-docker-action:newest`
-* `jerray/publish-docker-action:master`
-
-#### Auto Tag
-
-This action can generate image tag automatically base on the different `refs` type.
-
-If the `refs` refers to a branch, it uses the branch name as docker image name (`master` branch is renamed to `latest`).
-
-If the `refs` refers to a pull request, it attaches a `pr-` prefix to branch name as
-docker image tag. To allow pull request build, you must set `with.allow_pull_request` to `true`.
-
-When `refs` refers to a tag, it checks if the tag name is valid semantic version. If not, it uses
-tag name as docker image tag directly. Else it generates three tags based on the version number,
-each followed with pre-release information if there is any. For example:
-
-* git tag `1.0.0` is mapped to `1`, `1.0`, `1.0.0`
-* git tag `v1.0.0` is the same as above (prefix `v` is allowed)
-* git tag `v1.0.0-rc1` is mapped to `1-rc1`, `1.0-rc1`, `1.0.0-rc1`
-* git tag `20190921-actions` is not a valid semantic version string, so docker image tag is just the same
-
 ```yaml
-- uses: jerray/publish-docker-action@master
+- uses: wuhan005/publish-docker-action@master
   with:
     username: ${{ secrets.DOCKER_USERNAME }}
     password: ${{ secrets.DOCKER_PASSWORD }}
     registry: docker.pkg.github.com
-    repository: jerray/publish-docker-action
+    repository: wuhan005/publish-docker-action
     auto_tag: true
+    tag_format: "foo%YYYY%_%MM%"
 ```
 
-Auto tagging will override `with.tags` list.
+And an image with the tag `foo2019_9` will be published.
 
 ### Cache
 
