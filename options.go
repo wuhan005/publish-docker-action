@@ -28,6 +28,7 @@ type Inputs struct {
 	Tags             []string `env:"INPUT_TAGS" envDefault:"latest" envSeparator:","`
 	AllowPullRequest bool     `env:"INPUT_ALLOW_PULL_REQUEST"`
 	AutoTag          bool     `env:"INPUT_AUTO_TAG"`
+	TagFormat		 string	  `env:"INPUT_TAG_FORMAT"`
 }
 
 type Options struct {

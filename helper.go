@@ -3,52 +3,52 @@ package main
 import (
 	"regexp"
 	"strings"
+	"time"
 )
 
-const (
-	RefTypeBranch = "branch"
-	RefTypeTag    = "tag"
-	RefTypePull   = "pull"
-)
+//const (
+//	RefTypeBranch = "branch"
+//	RefTypeTag    = "tag"
+//	RefTypePull   = "pull"
+//)
 
-func resolveRef(github GitHub) (string, string) {
-	var typ, name string
-	refs := strings.SplitN(github.Ref, "/", 3)
-	if len(refs) == 3 {
-		switch refs[1] {
-		case "heads":
-			typ = RefTypeBranch
-		case "tags":
-			typ = RefTypeTag
-		case "pull":
-			typ = RefTypePull
-		}
-		name = refs[2]
-	}
-	return typ, name
-}
+//func resolveRef(github GitHub) (string, string) {
+//	var typ, name string
+//	refs := strings.SplitN(github.Ref, "/", 3)
+//	if len(refs) == 3 {
+//		switch refs[1] {
+//		case "heads":
+//			typ = RefTypeBranch
+//		case "tags":
+//			typ = RefTypeTag
+//		case "pull":
+//			typ = RefTypePull
+//		}
+//		name = refs[2]
+//	}
+//	return typ, name
+//}
 
-func resolveAutoTag(typ, name string, inputs *Inputs) {
+func resolveAutoTag(inputs *Inputs) {
 	if !inputs.AutoTag {
 		return
 	}
 
 	tags := make([]string, 0)
-
-	name = strings.Replace(name, "/", "-", -1)
-	switch typ {
-	case RefTypeBranch:
-		if name == "master" {
-			name = "latest"
-		}
-		tags = append(tags, name)
-	case RefTypeTag:
-		tags = append(tags, resolveSemanticVersionTag(name)...)
-	case RefTypePull:
-		tags = append(tags, strings.Join([]string{"pr", name}, "-"))
-	}
+	// Add `latest` version
+	tags = append(tags, "latest")
+	tags = append(tags, getFormatTag(inputs.TagFormat)...)
 
 	inputs.Tags = tags
+}
+
+func getFormatTag(tagFormat string) []string{
+	tags := make([]string, 0)
+
+	t := strings.Replace(tagFormat, "%TIMESTAMP%", string(time.Now().Unix()), -1)
+
+	tags = append(tags, t)
+	return tags
 }
 
 func resolveSemanticVersionTag(name string) []string {

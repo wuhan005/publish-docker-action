@@ -25,6 +25,9 @@ inputs:
   auto_tag:
     description: 'Generate tags by conditions automatically'
     default: false
+  tag_format:
+    description: 'Set the tag format'
+    default: '%TIMESTAMP%'
   cache:
     description: 'Images to consider as cache sources'
 runs:
