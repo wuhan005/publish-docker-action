@@ -1,6 +1,6 @@
 name: 'Publish Docker Action'
 description: 'Build, tag and publish docker image to your docker registry'
-author: 'jerray'
+author: 'jerray & wuhan005'
 inputs:
   username:
     description: 'Username used to login docker registry'

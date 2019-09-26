@@ -7,29 +7,6 @@ import (
 	"time"
 )
 
-//const (
-//	RefTypeBranch = "branch"
-//	RefTypeTag    = "tag"
-//	RefTypePull   = "pull"
-//)
-
-//func resolveRef(github GitHub) (string, string) {
-//	var typ, name string
-//	refs := strings.SplitN(github.Ref, "/", 3)
-//	if len(refs) == 3 {
-//		switch refs[1] {
-//		case "heads":
-//			typ = RefTypeBranch
-//		case "tags":
-//			typ = RefTypeTag
-//		case "pull":
-//			typ = RefTypePull
-//		}
-//		name = refs[2]
-//	}
-//	return typ, name
-//}
-
 func resolveAutoTag(inputs *Inputs) {
 	if !inputs.AutoTag {
 		return
@@ -46,8 +23,15 @@ func resolveAutoTag(inputs *Inputs) {
 func getFormatTag(tagFormat string) []string{
 	tags := make([]string, 0)
 
-	t := strings.Replace(tagFormat, "%TIMESTAMP%", strconv.Itoa(int(time.Now().Unix())), -1)
-
+	t := tagFormat
+	t = strings.Replace(t, "%TIMESTAMP%", strconv.Itoa(int(time.Now().Unix())), -1) 	// %TIMESTAMP% Timestamp
+	t = strings.Replace(t, "%YYYY%", strconv.Itoa(time.Now().Year()), -1)           	// %YYYY% Year
+	t = strings.Replace(t, "%MM%", strconv.Itoa(int(time.Now().Month())), -1)       	// %MM% Month
+	t = strings.Replace(t, "%DD%", strconv.Itoa(time.Now().Day()), -1)              	// %DD% Day
+	t = strings.Replace(t, "%H%", strconv.Itoa(time.Now().Hour()), -1)              	// %H% Hour
+	t = strings.Replace(t, "%m%", strconv.Itoa(time.Now().Minute()), -1)              	// %m% Minute
+	t = strings.Replace(t, "%s%", strconv.Itoa(time.Now().Second()), -1)              	// %s% Second
+	
 	tags = append(tags, t)
 	return tags
 }
