@@ -32,7 +32,7 @@ inputs:
     description: 'Images to consider as cache sources'
 runs:
   using: 'docker'
-  image: 'docker://jerray/publish-docker-action:latest'
+  image: 'docker://wuhan005/publish-docker-action:latest'
 branding:
   icon: 'anchor'
   color: 'blue'
