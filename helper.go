@@ -2,6 +2,7 @@ package main
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -45,7 +46,7 @@ func resolveAutoTag(inputs *Inputs) {
 func getFormatTag(tagFormat string) []string{
 	tags := make([]string, 0)
 
-	t := strings.Replace(tagFormat, "%TIMESTAMP%", string(time.Now().Unix()), -1)
+	t := strings.Replace(tagFormat, "%TIMESTAMP%", strconv.Itoa(int(time.Now().Unix())), -1)
 
 	tags = append(tags, t)
 	return tags
